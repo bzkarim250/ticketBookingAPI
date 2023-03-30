@@ -6,5 +6,6 @@ import validate from '../middlewares/validation';
 const userRoute = express.Router();
 
 userRoute.post('/signup', validate(UserValidation.signupSchema), userController.signUp);
+userRoute.get('/all',userController.getAllUsers);
 
 export default userRoute;
