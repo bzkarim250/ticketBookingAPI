@@ -23,6 +23,18 @@ class UserController {
       return out(res, 500, error.message || error, null, 'SERVER_ERROR');
     }
   }
+  static async getAllUsers(req,res){
+  try {
+      const users =   await UserServices. getAllUsers()
+      return out(res, 200, 'all user are displayed', users);
+      
+  } catch (error) {
+
+    return out(res, 500, error.message || error, null, 'SERVER_ERROR'); 
+      
+  }
+}
+
 }
 
 export default UserController;
