@@ -7,5 +7,6 @@ const userRoute = express.Router();
 
 userRoute.post('/signup', validate(UserValidation.signupSchema), userController.signUp);
 userRoute.get('/all', userController.getAllUsers);
+userRoute.get('/:id', userController.getUserById);
 
 export default userRoute;
