@@ -32,6 +32,18 @@ class UserController {
       return out(res, 500, error.message || error, null, 'SERVER_ERROR');
     }
   }
+
+  static async getUserById(req, res) {
+    try {
+      const user = await UserServices.getUserById(req.params.id);
+      if (!user) {
+        return out(res, 404, 'User not found', null, 'USER_NOT_FOUND');
+      }
+      return out(res, 200, 'User Found Successfull', user);
+    } catch (error) {
+      return out(res, 500, error.message || error, null, 'SERVER_ERROR');
+    }
+  }
 }
 
 export default UserController;
