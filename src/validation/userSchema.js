@@ -19,6 +19,9 @@ class UserValidation {
       .min(8)
       .pattern(passwordRegex)
       .required(),
+    role: Joi.string()
+      .max(8)
+      .required(),
   });
 
   static loginSchema = Joi.object({

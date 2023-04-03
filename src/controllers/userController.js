@@ -56,7 +56,9 @@ class UserController {
       if (!check(user.password, req.body.password)) {
         return out(res, 400, 'Wrong Credentials', null, 'BAD_REQUEST');
       }
-      const accessToken = sign({ user: user.id });
+      const accessToken = sign({
+        id: user.id, email: user.email, username: user.username, role: user.role
+      });
       user.password = undefined;
       user.role = undefined;
       user._doc.accessToken = accessToken;
