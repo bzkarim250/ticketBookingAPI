@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
-import { generate } from '../helpers/bcrypt';
+import { generate, check } from '../helpers/bcrypt';
 import { sign } from '../helpers/jwt';
 import UserServices from '../service/userService';
 import out from '../helpers/response';
@@ -40,6 +40,27 @@ class UserController {
         return out(res, 404, 'User not found', null, 'USER_NOT_FOUND');
       }
       return out(res, 200, 'User Found Successfull', user);
+    } catch (error) {
+      return out(res, 500, error.message || error, null, 'SERVER_ERROR');
+    }
+  }
+
+  static async login(req, res) {
+    try {
+      const { account } = req.body;
+
+      const user = await UserServices.getSingleUser({ $or: [{ username: account }, { email: account }] });
+      if (!user) {
+        return out(res, 404, 'The user not found', null, 'USER_NOT_FOUND');
+      }
+      if (!check(user.password, req.body.password)) {
+        return out(res, 400, 'Wrong Credentials', null, 'BAD_REQUEST');
+      }
+      const accessToken = sign({ user: user.id });
+      user.password = undefined;
+      user.role = undefined;
+      user._doc.accessToken = accessToken;
+      return out(res, 200, 'login succesfully', user);
     } catch (error) {
       return out(res, 500, error.message || error, null, 'SERVER_ERROR');
     }

@@ -20,6 +20,16 @@ class UserValidation {
       .pattern(passwordRegex)
       .required(),
   });
+
+  static loginSchema = Joi.object({
+    account: Joi.string()
+      .min(4)
+      .required(),
+    password: Joi.string()
+      .min(8)
+      .pattern(passwordRegex)
+      .required(),
+  });
 }
 
 export default UserValidation;
