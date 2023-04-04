@@ -39,5 +39,15 @@ class BusController {
       return out(res, 500, error.message || error, null, 'SERVER_ERROR');
     }
   }
+
+  static async deleteBus(req, res) {
+    try {
+      const bus = await BusServices.deleteBus(req.params.id);
+      if (!bus) return out(res, 400, 'bus not fund', null, 'BAD_REQUEST');
+      return out(res, 200, 'bus deleted successfully', bus);
+    } catch (error) {
+      return out(res, 500, error.message || error, null, 'SERVER_ERROR');
+    }
+  }
 }
 export default BusController;
