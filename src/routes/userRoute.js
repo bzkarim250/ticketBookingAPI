@@ -1,14 +1,13 @@
 import express from 'express';
 import userController from '../controllers/userController';
-import UserValidation from '../validation/userSchema';
-import validate from '../middlewares/validation';
 import { isAdmin } from '../middlewares/authentication';
+import * as Validation from '../middlewares/validation/user';
 
 const userRoute = express.Router();
 
-userRoute.post('/signup', validate(UserValidation.signupSchema), userController.signUp);
+userRoute.post('/signup', Validation.userSignupValidation, userController.signUp);
 userRoute.get('/all', isAdmin, userController.getAllUsers);
 userRoute.get('/:id', isAdmin, userController.getUserById);
-userRoute.post('/login', validate(UserValidation.loginSchema), userController.login);
+userRoute.post('/login', Validation.userLoginValidation, userController.login);
 
 export default userRoute;

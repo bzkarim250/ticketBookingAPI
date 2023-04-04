@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import { generate, check } from '../helpers/bcrypt';
 import { sign } from '../helpers/jwt';
-import UserServices from '../service/userService';
+import UserServices from '../database/services/userService';
 import out from '../helpers/response';
 
 class UserController {
@@ -11,7 +11,7 @@ class UserController {
       const { username, email } = req.body;
       const userExist = await UserServices.getSingleUser({ $or: [{ username }, { email }] });
       if (userExist) {
-        return out(res, 409, 'User already exist', null, 'USER_EXISTS');
+        return out(res, 409, 'username or email is taken', null, 'USER_EXISTS');
       }
       req.body.password = await generate(req.body.password);
       const user = await UserServices.createUser({ ...req.body });
@@ -51,7 +51,7 @@ class UserController {
 
       const user = await UserServices.getSingleUser({ $or: [{ username: account }, { email: account }] });
       if (!user) {
-        return out(res, 404, 'The user not found', null, 'USER_NOT_FOUND');
+        return out(res, 404, 'Wrong Credentials', null, 'USER_NOT_FOUND');
       }
       if (!check(user.password, req.body.password)) {
         return out(res, 400, 'Wrong Credentials', null, 'BAD_REQUEST');
