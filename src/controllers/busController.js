@@ -1,4 +1,4 @@
-import BusServices from '../service/busService';
+import BusServices from '../database/services/busService';
 import out from '../helpers/response';
 
 class BusController {

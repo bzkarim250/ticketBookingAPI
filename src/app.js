@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import dbConnect from './database/db';
+import dbConnect from './database/dbConnect';
 import route from './routes/app';
 import swaggerDocs from './api-docs/swagger';
 
