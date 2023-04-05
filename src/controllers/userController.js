@@ -67,6 +67,16 @@ class UserController {
       return out(res, 500, error.message || error, null, 'SERVER_ERROR');
     }
   }
+
+  static async deleteUser(req, res) {
+    try {
+      const user = await UserServices.deleteUser(req.params.id);
+      if (!user) return out(res, 400, 'Not allowed to delete other people\'s blogs', null, 'BAD_REQUEST');
+      return out(res, 200, 'User Deleted Successful', Blob);
+    } catch (error) {
+      return out(res, 500, error.message || error, null, 'SERVER_ERROR');
+    }
+  }
 }
 
 export default UserController;
