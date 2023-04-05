@@ -51,10 +51,10 @@ class UserController {
 
       const user = await UserServices.getSingleUser({ $or: [{ username: account }, { email: account }] });
       if (!user) {
-        return out(res, 404, 'Wrong Credentials', null, 'USER_NOT_FOUND');
+        return out(res, 404, 'Username or email not registered', null, 'USER_NOT_FOUND');
       }
       if (!check(user.password, req.body.password)) {
-        return out(res, 400, 'Wrong Credentials', null, 'BAD_REQUEST');
+        return out(res, 400, 'Wrong password', null, 'BAD_REQUEST');
       }
       const accessToken = sign({
         id: user.id, email: user.email, username: user.username, role: user.role
