@@ -241,8 +241,8 @@ const login = {
         },
       },
     },
-    400: {
-      description: "BAD_REQUEST",
+    401: {
+      description: "UNAUTHORIZED",
       content: {
         "application/json": {
           schema: {
