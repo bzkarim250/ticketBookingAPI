@@ -54,7 +54,7 @@ class UserController {
         return out(res, 404, 'Username or email not registered', null, 'USER_NOT_FOUND');
       }
       if (!check(user.password, req.body.password)) {
-        return out(res, 400, 'Wrong password', null, 'BAD_REQUEST');
+        return out(res, 401, 'Wrong password', null, 'UNAUTHORIZED');
       }
       const accessToken = sign({
         id: user.id, email: user.email, username: user.username, role: user.role
@@ -70,9 +70,19 @@ class UserController {
 
   static async deleteUser(req, res) {
     try {
-      const user = await UserServices.deleteUser(req.params.id);
-      if (!user) return out(res, 400, 'Not allowed to delete other people\'s blogs', null, 'BAD_REQUEST');
-      return out(res, 200, 'User Deleted Successful', Blob);
+      const user = await UserServices.getUserById(req.params.id);
+
+      if (!user) {
+        return out(res, 404, 'User not found', null, 'USER_NOT_FOUND');
+      }
+
+      if (user.role === 'admin' && user.id === req.user.id) {
+        return out(res, 403, 'Admins cannot delete their own accounts', null, 'FORBIDDEN');
+      }
+
+      await UserServices.deleteUser(req.params.id);
+
+      return out(res, 200, 'User Deleted Successful', null);
     } catch (error) {
       return out(res, 500, error.message || error, null, 'SERVER_ERROR');
     }
