@@ -98,10 +98,21 @@ const createUser = {
           schema: {
             type: "object",
             properties: {
+              status: {
+                type: "number",
+                description: "Status code of Error",
+                example: 400,
+              },
               error: {
                 type: "string",
-                example: "Invalid request body",
+                description: "validation error",
+                example: "BAD_REQUEST",
               },
+              message: {
+                type: "string",
+                description: "Error message",
+                example: "Invalid request body",
+              }
             },
           },
         },
@@ -114,10 +125,19 @@ const createUser = {
           schema: {
             type: "object",
             properties: {
+              status: {
+                type: 'number',
+                example: 409,
+              },
               error: {
                 type: "string",
-                example: "User already exists",
+                example: "USER_EXISTS",
               },
+              message: {
+                type: "string",
+                description: "User already exists",
+                example: "User already exists",
+              }
             },
           },
         },
@@ -130,30 +150,46 @@ const createUser = {
           schema: {
             type: "object",
             properties: {
+              status: {
+                type: 'number',
+                example: 422,
+              },
               error: {
                 type: "string",
-                description: "Description of the error",
-                example: "Email or username not registered or invalid",
+                description: "Invalid data format",
+                example: "VALIDATION_ERROR",
               },
+              message: {
+                type: "string",
+                description: "Error message",
+                example: "Email or username not registered or invalid",
+              }
             },
-          },
-          example: {
-            error: "Username or email must be valid",
           },
         },
       },
     },
     500: {
-      description: "SERVER_ERROR",
+      description: "Internal server error",
       content: {
         "application/json": {
           schema: {
             type: "object",
             properties: {
+              status: {
+                type: "number",
+                description: "status code of response",
+                example: 500
+              },
               error: {
                 type: "string",
-                example: "Internal server error",
+                example: "SERVER_ERROR",
               },
+              message: {
+                type: "string",
+                description: "Server errors",
+                example: "error connection timeout",
+              }
             },
           },
         },
@@ -248,35 +284,47 @@ const login = {
           schema: {
             type: "object",
             properties: {
+              status: {
+                type: 'number',
+                example: 401,
+              },
+              message: {
+                type: "string",
+                description: "wrong credentials",
+                example: "Wrong password",
+              },
               error: {
                 type: "string",
-                description: "Description of the error",
-                example: "Invalid request parameters",
+                description: "Login failed",
+                example: "UNAUTHORIZED",
               },
             },
-          },
-          example: {
-            error: "Wrong password",
           },
         },
       },
     },
     404: {
-      description: "Not Found",
+      description: "Not found",
       content: {
         "application/json": {
           schema: {
             type: "object",
             properties: {
-              error: {
+              status: {
+                type: 'number',
+                example: 404,
+              },
+              message: {
                 type: "string",
-                description: "Description of the error",
+                description: "user not registered",
                 example: "Email or username not registered",
               },
+              error: {
+                type: "string",
+                description: "user not registerd",
+                example: "NOT_FOUND",
+              },
             },
-          },
-          example: {
-            error: "Username or email not registered",
           },
         },
       },
@@ -288,40 +336,468 @@ const login = {
           schema: {
             type: "object",
             properties: {
-              error: {
+              status: {
+                type: 'number',
+                example: 422,
+              },
+              message: {
                 type: "string",
-                description: "Description of the error",
+                description: "Invalid data input",
                 example: "Email or username not registered or invalid",
               },
+              error: {
+                type: "string",
+                example: "Unprocessable Content",
+              },
             },
-          },
-          example: {
-            error: "Username or email must be valid",
           },
         },
       },
     },
     500: {
-      description: "SERVER_ERROR",
+      description: "Internal server error",
       content: {
         "application/json": {
           schema: {
             type: "object",
             properties: {
+              status: {
+                type: "number",
+                description: "status code of response",
+                example: 500
+              },
+              message: {
+                type: "string",
+                description: "Server errors",
+                example: "error connection timeout",
+              },
               error: {
                 type: "string",
-                description: "Description of the error",
-                example: "Internal server error",
+                example: "SERVER_ERROR",
               },
             },
-          },
-          example: {
-            error: "Internal server error",
           },
         },
       },
     },
   },
+};
+const getAllUsers = {
+  tags: ['User'],
+  description: "List all users",
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  responses: {
+    200: {
+      description: "OK",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "Status code of the request",
+                example: 200,
+              },
+              message: {
+                type: "string",
+                description: "list of all registered users",
+                example: "all users displayed",
+              },
+              data: {
+                type: "object",
+                example: [],
+              },
+            }
+          }
+        }
+      }
+    },
+    401: {
+      description: "AUTHENTICATION_ERROR",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "Status code of Error",
+                example: 401,
+              },
+              error: {
+                type: "string",
+                description: "authentication error",
+                example: "UNAUTHORIZED",
+              },
+              message: {
+                type: "string",
+                description: "Error message",
+                example: "You don't have access to do that action",
+              }
+            }
+          }
+        }
+      }
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "status code of response",
+                example: 500
+              },
+              error: {
+                type: "string",
+                example: "SERVER_ERROR",
+              },
+              message: {
+                type: "string",
+                description: "Server errors",
+                example: "Error connection timeout",
+              }
+            },
+          },
+        },
+      },
+    },
+  }
+};
+const getUserById = {
+  tags: ['User'],
+  description: "Get user by id",
+  parameters: [
+    {
+      name: "id",
+      in: "path",
+      description: "User id",
+      type: "string",
+      example: "61721c2f557eb8a9a9f48cc9"
+    }
+  ],
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  responses: {
+    200: {
+      description: "Used details retrieved",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "Status code of the request",
+                example: 200,
+              },
+              data: {
+                type: "object",
+                properties: {
+                  _id: {
+                    type: "string",
+                    description: "User ID",
+                    example: "61721c2f557eb8a9a9f48cc9",
+                  },
+                  username: {
+                    type: "string",
+                    description: "User name",
+                    example: "Twizerimana12",
+                  },
+                  fullName: {
+                    type: "string",
+                    description: "User fullname",
+                    example: "Twizerimana Clenia",
+                  },
+                  email: {
+                    type: "string",
+                    description: "User email",
+                    example: "cleniatwizerimana@gmail.com",
+                  },
+                  phone: {
+                    type: "string",
+                    description: "User phone number",
+                    example: "+25078...",
+                  },
+                },
+              },
+              message: {
+                description: "User with that ID is found",
+                example: "User Found Successfull",
+              }
+            },
+          },
+        },
+      },
+    },
+    401: {
+      description: "AUTHENTICATION_ERROR",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "Status code of Error",
+                example: 401,
+              },
+              error: {
+                type: "string",
+                description: "authentication error",
+                example: "UNAUTHORIZED",
+              },
+              message: {
+                type: "string",
+                description: "Error message",
+                example: "You don't have access to do that action",
+              }
+            }
+          }
+        }
+      }
+    },
+    404: {
+      description: "Not found",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: 'number',
+                example: 404,
+              },
+              message: {
+                type: "string",
+                description: "user not registered",
+                example: "Email or username not registered",
+              },
+              error: {
+                type: "string",
+                description: "user not registerd",
+                example: "NOT_FOUND",
+              },
+            },
+          },
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "status code of response",
+                example: 500
+              },
+              message: {
+                type: "string",
+                description: "Server errors",
+                example: "error connection timeout",
+              },
+              error: {
+                type: "string",
+                example: "SERVER_ERROR",
+              },
+            },
+          },
+        },
+      },
+    },
+  }
+};
+const deleteUserById = {
+  tags: ['User'],
+  description: "Delete user by id",
+  parameters: [
+    {
+      name: "id",
+      in: "path",
+      description: "User id",
+      type: "string",
+      example: "61721c2f557eb8a9a9f48cc9"
+    }
+  ],
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  responses: {
+    200: {
+      description: "User deleted successfully",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "Status code of the request",
+                example: 200,
+              },
+              data: {
+                type: "object",
+                properties: {
+                  _id: {
+                    type: "string",
+                    description: "User ID",
+                    example: "61721c2f557eb8a9a9f48cc9",
+                  },
+                  username: {
+                    type: "string",
+                    description: "User name",
+                    example: "Twizerimana12",
+                  },
+                  fullName: {
+                    type: "string",
+                    description: "User fullname",
+                    example: "Twizerimana Clenia",
+                  },
+                  email: {
+                    type: "string",
+                    description: "User email",
+                    example: "cleniatwizerimana@gmail.com",
+                  },
+                  phone: {
+                    type: "string",
+                    description: "User phone number",
+                    example: "+25078...",
+                  },
+                },
+              },
+              message: {
+                description: "User with that ID is found",
+                example: "User Found Successfull",
+              }
+            },
+          },
+        },
+      },
+    },
+    401: {
+      description: "AUTHENTICATION_ERROR",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "Status code of Error",
+                example: 401,
+              },
+              error: {
+                type: "string",
+                description: "authentication error",
+                example: "UNAUTHORIZED",
+              },
+              message: {
+                type: "string",
+                description: "Error message",
+                example: "You don't have access to do that action",
+              }
+            }
+          }
+        }
+      }
+    },
+    403: {
+      description: "Forbidden",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "Status code of Error",
+                example: 403,
+              },
+              message: {
+                type: "string",
+                description: "Unable to delete account",
+                example: "Admins cannot delete their own accounts",
+              },
+              error: {
+                type: "string",
+                description: "admins can not delete their own accounts",
+                example: "FORBIDDEN",
+              },
+            }
+          }
+        }
+      }
+    },
+    404: {
+      description: "Not found",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: 'number',
+                example: 404,
+              },
+              message: {
+                type: "string",
+                description: "user not registered",
+                example: "Email or username not registered",
+              },
+              error: {
+                type: "string",
+                description: "user not registerd",
+                example: "NOT_FOUND",
+              },
+            },
+          },
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "number",
+                description: "status code of response",
+                example: 500
+              },
+              message: {
+                type: "string",
+                description: "Server errors",
+                example: "error connection timeout",
+              },
+              error: {
+                type: "string",
+                example: "SERVER_ERROR",
+              },
+            },
+          },
+        },
+      },
+    },
+  }
 };
 
 export const userRouteDocs = {
@@ -331,4 +807,13 @@ export const userRouteDocs = {
   "/api/user/login": {
     post: login,
   },
+  "/api/user/all": {
+    get: getAllUsers,
+  },
+  "/api/user/{id}": {
+    get: getUserById,
+  },
+  "/api/user/delete/{id}": {
+    delete: deleteUserById,
+  }
 };
