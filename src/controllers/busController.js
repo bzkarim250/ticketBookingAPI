@@ -5,13 +5,14 @@ class BusController {
   static async createBus(req, res) {
     try {
       const { plateNo, seat, status } = req.body;
+      const agency = req.agencyId;
       const busExist = await BusServices.getSingleBus({ plateNo });
       if (busExist) {
         return out(res, 409, 'Bus already exists', null, 'BUS_EXISTS');
       }
       const availableSeats = seat;
       const bus = await BusServices.createBus({
-        plateNo, seat, status, availableSeats
+        plateNo, seat, status, availableSeats, agency
       });
       return out(res, 201, 'Bus created successfully', bus);
     } catch (error) {
