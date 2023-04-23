@@ -2,7 +2,7 @@ import Agency from '../models/agency';
 
 class AgencyServices {
   static async getAllAgencies() {
-    const agencies = await Agency.find();
+    const agencies = await Agency.find().populate({ path: 'companyAdmin', select: '-_id fullName email' });
     return agencies;
   }
 
