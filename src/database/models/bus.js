@@ -7,6 +7,7 @@ const busSchema = mongoose.Schema({
   },
   seat: {
     type: Number,
+    required: true
   },
   status: {
     type: Boolean,
@@ -14,6 +15,12 @@ const busSchema = mongoose.Schema({
   },
   availableSeats: {
     type: Number,
+    required: true
+  },
+  agency: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Agency',
+    required: true
   }
 
 }, { timestamps: true });
