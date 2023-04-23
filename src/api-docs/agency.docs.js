@@ -227,9 +227,102 @@ const createAgency = {
     },
   },
 };
+const getAllAgencies = {
+  tags: ['Agency'],
+  description: 'List all agencies',
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  responses: {
+    200: {
+      description: 'OK',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              status: {
+                type: 'number',
+                description: 'Status code of the request',
+                example: 200,
+              },
+              message: {
+                type: 'string',
+                description: 'list of all registered agencies',
+                example: 'all agencies displayed',
+              },
+              data: {
+                type: 'object',
+                example: [],
+              },
+            }
+          }
+        }
+      }
+    },
+    401: {
+      description: 'AUTHENTICATION_ERROR',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              status: {
+                type: 'number',
+                description: 'Status code of Error',
+                example: 401,
+              },
+              error: {
+                type: 'string',
+                description: 'authentication error',
+                example: 'UNAUTHORIZED',
+              },
+              message: {
+                type: 'string',
+                description: 'Error message',
+                example: "You don't have access to do that action",
+              }
+            }
+          }
+        }
+      }
+    },
+    500: {
+      description: 'Internal server error',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              status: {
+                type: 'number',
+                description: 'status code of response',
+                example: 500
+              },
+              error: {
+                type: 'string',
+                example: 'SERVER_ERROR',
+              },
+              message: {
+                type: 'string',
+                description: 'Server errors',
+                example: 'Error connection timeout',
+              }
+            },
+          },
+        },
+      },
+    },
+  }
+};
 
 export const agencyRouteDocs = {
   '/api/agency/create': {
     post: createAgency,
+  },
+  '/api/agency/all': {
+    get: getAllAgencies,
   }
 };

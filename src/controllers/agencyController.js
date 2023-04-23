@@ -14,6 +14,15 @@ class AgencyController {
       return out(res, 500, error.message || error, null, 'SERVER_ERROR');
     }
   }
+
+  static async getAllAgencies(req, res) {
+    try {
+      const agencies = await AgencyServices.getAllAgencies();
+      return out(res, 200, 'all agencies retrived', agencies);
+    } catch (error) {
+      return out(res, 500, error.message || error, null, 'SERVER_ERROR');
+    }
+  }
 }
 
 export default AgencyController;
