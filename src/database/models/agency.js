@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const agencySchema = mongoose.Schema({
-  agencyName: {
+  name: {
     type: String,
     required: true,
     unique: true

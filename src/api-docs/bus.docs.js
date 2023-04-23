@@ -1,7 +1,8 @@
+/* eslint-disable quotes */
 /* eslint-disable import/prefer-default-export */
-const createAgency = {
-  tags: ['Agency'],
-  summary: 'Create Agency',
+const createBus = {
+  tags: ['Bus'],
+  summary: 'Create Bus',
   requestBody: {
     required: true,
     content: {
@@ -9,30 +10,15 @@ const createAgency = {
         schema: {
           type: 'object',
           properties: {
-            name: {
+            plateNo: {
               type: 'string',
-              description: 'The name of the company',
-              example: 'Volcano',
+              description: 'The plate number of bus',
+              example: 'RAA344A',
             },
-            email: {
-              type: 'string',
-              description: 'The company email',
-              example: 'info@volcano.rw',
-            },
-            address: {
-              type: 'string',
-              description: 'The location of business',
-              example: 'Kigali Rw',
-            },
-            phone: {
-              type: 'string',
-              description: 'The company phone number',
-              example: '+250780514840',
-            },
-            website: {
-              type: 'string',
-              description: 'The website of company',
-              example: 'https://volcano.com',
+            seat: {
+              type: 'number',
+              description: 'Number of Seats',
+              example: 32,
             },
           },
         }
@@ -46,7 +32,7 @@ const createAgency = {
   ],
   responses: {
     201: {
-      description: 'Agency registred succesfully',
+      description: 'Bus  succesfully added',
       content: {
         'application/json': {
           schema: {
@@ -56,41 +42,8 @@ const createAgency = {
                 type: 'number',
                 example: 201,
               },
-              data: {
-                type: 'object',
-                properties: {
-                  _id: {
-                    type: 'string',
-                    example: '612a1bdeaa15c07f6cf0a165',
-                  },
-                  name: {
-                    type: 'string',
-                    example: 'volcano',
-                  },
-                  email: {
-                    type: 'string',
-                    example: 'info@volcano.rw',
-                  },
-                  address: {
-                    type: 'string',
-                    example: 'Kigali Rw',
-                  },
-                  phone: {
-                    type: 'string',
-                    example: '+25078...',
-                  },
-                  website: {
-                    type: 'string',
-                    example: 'https://volcano.com',
-                  },
-                },
-              },
-              accessToken: {
-                type: 'string',
-                example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-              },
+              data: {},
             },
-            required: ['status', 'data'],
           },
         },
       },
@@ -149,8 +102,35 @@ const createAgency = {
         }
       }
     },
+    403: {
+      description: 'Forbidden',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              status: {
+                type: 'number',
+                description: 'Status code of Error',
+                example: 403,
+              },
+              message: {
+                type: 'string',
+                description: 'Unable to add bus',
+                example: 'Company admin who has not yet registered any agency',
+              },
+              error: {
+                type: 'string',
+                description: 'You are not associated with any agency',
+                example: 'FORBIDDEN',
+              },
+            }
+          }
+        }
+      }
+    },
     409: {
-      description: 'Your company alyready registred',
+      description: 'Bus alyready registred',
       content: {
         'application/json': {
           schema: {
@@ -188,7 +168,7 @@ const createAgency = {
               message: {
                 type: 'string',
                 description: 'Invalid data input',
-                example: 'Your company name must be valid and contains atleast 3 characters long',
+                example: 'Plate number must be valid',
               },
               error: {
                 type: 'string',
@@ -227,14 +207,9 @@ const createAgency = {
     },
   },
 };
-const getAllAgencies = {
-  tags: ['Agency'],
-  description: 'List all agencies',
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
+const getAllBuses = {
+  tags: ['Bus'],
+  description: 'List all buses',
   responses: {
     200: {
       description: 'OK',
@@ -250,12 +225,12 @@ const getAllAgencies = {
               },
               message: {
                 type: 'string',
-                description: 'list of all registered agencies',
-                example: 'all agencies displayed',
+                description: 'list of all registered busies',
+                example: 'all buses displayed',
               },
               data: {
-                type: 'object',
-                example: [],
+                type: "object",
+                example: {},
               },
             }
           }
@@ -318,11 +293,11 @@ const getAllAgencies = {
   }
 };
 
-export const agencyRouteDocs = {
-  '/api/agency/create': {
-    post: createAgency,
+export const busRouteDocs = {
+  '/api/bus/create': {
+    post: createBus,
   },
-  '/api/agency/all': {
-    get: getAllAgencies,
+  '/api/bus/all': {
+    get: getAllBuses,
   }
 };

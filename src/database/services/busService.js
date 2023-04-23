@@ -2,7 +2,7 @@ import Bus from '../models/bus';
 
 class BusServices {
   static async getAllBuses() {
-    const buses = await Bus.find().select('plateNo seat availableSeats');
+    const buses = await Bus.find().populate({ path: 'agency', select: '-_id name' });
     return buses;
   }
 
