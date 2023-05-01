@@ -79,7 +79,9 @@ class UserController {
       if (user.role === 'admin' && user.id === req.user.id) {
         return out(res, 403, 'Admins cannot delete their own accounts', null, 'FORBIDDEN');
       }
-
+      if (!(user.role === 'admin' && user.id === req.user.id)) {
+        return out(res, 403, 'You can not delete other people\'s account', null, 'FORBIDDEN');
+      }
       await UserServices.deleteUser(req.params.id);
 
       return out(res, 200, 'User Deleted Successful', null);

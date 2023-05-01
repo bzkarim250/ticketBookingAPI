@@ -230,11 +230,6 @@ const createAgency = {
 const getAllAgencies = {
   tags: ['Agency'],
   description: 'List all agencies',
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
   responses: {
     200: {
       description: 'OK',
