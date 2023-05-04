@@ -119,81 +119,14 @@ const createUser = {
       },
     },
     409: {
-      description: "User Already Exists",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: 'number',
-                example: 409,
-              },
-              error: {
-                type: "string",
-                example: "USER_EXISTS",
-              },
-              message: {
-                type: "string",
-                description: "User already exists",
-                example: "User already exists",
-              }
-            },
-          },
-        },
-      },
+      description: 'Account already registred',
+      $ref: "#/components/responses/AlreadyExists"
     },
     422: {
-      description: "Unprocessable Content",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: 'number',
-                example: 422,
-              },
-              error: {
-                type: "string",
-                description: "Invalid data format",
-                example: "VALIDATION_ERROR",
-              },
-              message: {
-                type: "string",
-                description: "Error message",
-                example: "Email or username not registered or invalid",
-              }
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/UnprocessableContent"
     },
     500: {
-      description: "Internal server error",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: "number",
-                description: "status code of response",
-                example: 500
-              },
-              error: {
-                type: "string",
-                example: "SERVER_ERROR",
-              },
-              message: {
-                type: "string",
-                description: "Server errors",
-                example: "error connection timeout",
-              }
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   },
 };
@@ -355,30 +288,7 @@ const login = {
       },
     },
     500: {
-      description: "Internal server error",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: "number",
-                description: "status code of response",
-                example: 500
-              },
-              message: {
-                type: "string",
-                description: "Server errors",
-                example: "error connection timeout",
-              },
-              error: {
-                type: "string",
-                example: "SERVER_ERROR",
-              },
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   },
 };
@@ -445,30 +355,7 @@ const getAllUsers = {
       }
     },
     500: {
-      description: "Internal server error",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: "number",
-                description: "status code of response",
-                example: 500
-              },
-              error: {
-                type: "string",
-                example: "SERVER_ERROR",
-              },
-              message: {
-                type: "string",
-                description: "Server errors",
-                example: "Error connection timeout",
-              }
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   }
 };
@@ -595,30 +482,7 @@ const getUserById = {
       },
     },
     500: {
-      description: "Internal server error",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: "number",
-                description: "status code of response",
-                example: 500
-              },
-              message: {
-                type: "string",
-                description: "Server errors",
-                example: "error connection timeout",
-              },
-              error: {
-                type: "string",
-                example: "SERVER_ERROR",
-              },
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   }
 };
@@ -772,30 +636,7 @@ const deleteUserById = {
       },
     },
     500: {
-      description: "Internal server error",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: "number",
-                description: "status code of response",
-                example: 500
-              },
-              message: {
-                type: "string",
-                description: "Server errors",
-                example: "error connection timeout",
-              },
-              error: {
-                type: "string",
-                example: "SERVER_ERROR",
-              },
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   }
 };
