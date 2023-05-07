@@ -11,6 +11,23 @@ const ticketSchema = new mongoose.Schema({
     ref: 'Bus',
     required: true
   },
+  agency: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Agency',
+    required: true
+  },
+  from: {
+    type: String,
+    required: true
+  },
+  to: {
+    type: String,
+    required: true
+  },
+  numberOfTickets: {
+    type: Number,
+    required: true
+  },
   seatNumbers: [
     {
       type: Number,
@@ -20,20 +37,11 @@ const ticketSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  arrivalTime: {
-    type: Date,
-    required: true
-  },
   price: { type: Number, required: true },
   status: {
     type: String,
     enum: ['confirmed', 'cancelled', 'expired'],
     default: 'confirmed'
-  },
-  agency: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Agency',
-    required: true
   }
 }, { timestamps: true });
 

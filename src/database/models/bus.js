@@ -21,8 +21,16 @@ const busSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Agency',
     required: true
+  },
+  from: {
+    type: String,
+    required: true
+  },
+  to: {
+    type: String,
+    required: true
   }
-
 }, { timestamps: true });
+
 const Bus = mongoose.model('Bus', busSchema);
 export default Bus;

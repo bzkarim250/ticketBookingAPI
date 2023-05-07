@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable import/prefer-default-export */
 const createAgency = {
   tags: ['Agency'],
@@ -200,30 +201,7 @@ const createAgency = {
       },
     },
     500: {
-      description: 'Internal server error',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: {
-                type: 'number',
-                description: 'status code of response',
-                example: 500
-              },
-              error: {
-                type: 'string',
-                example: 'SERVER_ERROR',
-              },
-              message: {
-                type: 'string',
-                description: 'Server errors',
-                example: 'Error connection timeout',
-              }
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   },
 };
@@ -285,30 +263,7 @@ const getAllAgencies = {
       }
     },
     500: {
-      description: 'Internal server error',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: {
-                type: 'number',
-                description: 'status code of response',
-                example: 500
-              },
-              error: {
-                type: 'string',
-                example: 'SERVER_ERROR',
-              },
-              message: {
-                type: 'string',
-                description: 'Server errors',
-                example: 'Error connection timeout',
-              }
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   }
 };

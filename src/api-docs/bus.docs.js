@@ -2,7 +2,7 @@
 /* eslint-disable import/prefer-default-export */
 const createBus = {
   tags: ['Bus'],
-  summary: 'Create Bus',
+  summary: 'Add new Bus',
   requestBody: {
     required: true,
     content: {
@@ -156,54 +156,10 @@ const createBus = {
     },
     422: {
       description: 'Unprocessable Content',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: {
-                type: 'number',
-                example: 422,
-              },
-              message: {
-                type: 'string',
-                description: 'Invalid data input',
-                example: 'Plate number must be valid',
-              },
-              error: {
-                type: 'string',
-                example: 'Unprocessable Content',
-              },
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/UnprocessableContent"
     },
     500: {
-      description: 'Internal server error',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: {
-                type: 'number',
-                description: 'status code of response',
-                example: 500
-              },
-              error: {
-                type: 'string',
-                example: 'SERVER_ERROR',
-              },
-              message: {
-                type: 'string',
-                description: 'Server errors',
-                example: 'Error connection timeout',
-              }
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   },
 };
@@ -265,30 +221,7 @@ const getAllBuses = {
       }
     },
     500: {
-      description: 'Internal server error',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              status: {
-                type: 'number',
-                description: 'status code of response',
-                example: 500
-              },
-              error: {
-                type: 'string',
-                example: 'SERVER_ERROR',
-              },
-              message: {
-                type: 'string',
-                description: 'Server errors',
-                example: 'Error connection timeout',
-              }
-            },
-          },
-        },
-      },
+      $ref: "#/components/responses/ServerError"
     },
   }
 };
