@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer';
 import Pdfkit from 'pdfkit';
-import fs from 'fs';
 import config from './configEnv';
 
 const mailer = async (info, action) => {
@@ -48,9 +47,6 @@ const mailer = async (info, action) => {
       break;
   }
 
-  const doc = new Pdfkit();
-  doc.pipe(fs.createWriteStream('ticket.pdf'));
-
   const amount = info.price / info.numberOfTickets;
   const ticketDocuments = [];
 
@@ -59,7 +55,6 @@ const mailer = async (info, action) => {
 
     // Create a new PDF document for each ticket
     const doc = new Pdfkit();
-    doc.pipe(fs.createWriteStream(`ticket-${seatNumber}.pdf`));
 
     doc.font('Helvetica-Bold').fontSize(20).text(`${info.agency}`, { align: 'center' });
     doc.moveDown();
@@ -79,7 +74,7 @@ const mailer = async (info, action) => {
     // Store the PDF document in an array
     ticketDocuments.push({
       filename: `ticket-${seatNumber}.pdf`,
-      content: fs.createReadStream(`ticket-${seatNumber}.pdf`),
+      content: doc,
       contentType: 'application/pdf'
     });
   }
