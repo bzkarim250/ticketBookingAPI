@@ -2,6 +2,7 @@ import TicketServices from '../database/services/ticketService';
 import BusServices from '../database/services/busService';
 import TripServices from '../database/services/tripService';
 import output from '../helpers/response';
+import mailer from '../helpers/mailer';
 
 class TicketController {
   static async createTicket(req, res) {
@@ -9,7 +10,7 @@ class TicketController {
       const {
         agency, from, to, numberOfTickets, departureTime
       } = req.body;
-      const { id } = req.user;
+      const { id, username, email } = req.user;
       const trip = await TripServices.tripeExists(agency, from, to);
       if (!trip) return output(res, 400, 'No available trip or route found', null, 'NO_AVAILABLE_TRIP');
       const { price } = trip;
@@ -23,6 +24,7 @@ class TicketController {
         seatNumbers.push(bus.seat - bus.availableSeats + i + 1);
       }
       await BusServices.decrementAvailableSeats(bus._id, numberOfTickets);
+      const amount = price * numberOfTickets;
       const ticket = await TicketServices.createTicket({
         user: id,
         bus: bus._id,
@@ -32,8 +34,11 @@ class TicketController {
         numberOfTickets,
         seatNumbers,
         departureTime,
-        price: price * numberOfTickets
+        price: amount
       });
+      await mailer({
+        username, bus: bus.plateNo, agency, from, to, seatNumbers, departureTime, numberOfTickets, price: amount, email
+      }, 'bookTicket');
 
       return output(res, 201, 'Your ticket has been successfully booked', ticket);
     } catch (error) {

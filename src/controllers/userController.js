@@ -16,7 +16,9 @@ class UserController {
       req.body.password = await generate(req.body.password);
       const user = await UserServices.createUser({ ...req.body });
       user.password = undefined;
-      const accessToken = sign({ id: user._id, username: user.username, role: user.role });
+      const accessToken = sign({
+        id: user._id, username: user.username, role: user.role, email: user.email
+      });
       user._doc.accessToken = accessToken;
       return output(res, 201, 'Signup succesfully', user);
     } catch (error) {
