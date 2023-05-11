@@ -38,6 +38,14 @@ class TripServices {
     const trip = await Trip.findByIdAndDelete(TripId);
     return trip;
   }
+
+  static async getTripsByAgency(agency) {
+    const agence = await Agency.findOne({ name: agency });
+    if (!agence) return null;
+    const { id } = agence;
+    const trips = await Trip.find({ agency: id });
+    return trips;
+  }
 }
 
 export default TripServices;

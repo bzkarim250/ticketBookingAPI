@@ -79,9 +79,59 @@ const createTrip = {
     },
   },
 };
+const getTripsByAgency = {
+  tags: ['Trip'],
+  parameters: [
+    {
+      name: "agency",
+      in: "path",
+      description: "Agency Name",
+      type: "string",
+      example: "Volcano"
+    }
+  ],
+  description: 'List all trips by an gency',
+  responses: {
+    200: {
+      description: 'OK',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              status: {
+                type: 'number',
+                description: 'Status code of the request',
+                example: 200,
+              },
+              message: {
+                type: 'string',
+                description: 'list of all trips by Volcano',
+                example: 'Trips Found Successfull',
+              },
+              data: {
+                type: "object",
+                example: {},
+              },
+            }
+          }
+        }
+      }
+    },
+    404: {
+      $ref: "#components/responses/NotFound"
+    },
+    500: {
+      $ref: "#/components/responses/ServerError"
+    },
+  }
+};
 
 export const tripRouteDocs = {
   '/api/trip/create': {
     post: createTrip,
-  }
+  },
+  '/api/trip/{agency}/all': {
+    get: getTripsByAgency,
+  },
 };

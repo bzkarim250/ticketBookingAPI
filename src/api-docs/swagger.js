@@ -171,6 +171,31 @@ const options = {
             },
           },
         },
+        NotFound: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  status: {
+                    type: 'number',
+                    example: 404,
+                  },
+                  message: {
+                    type: 'string',
+                    description: 'Record not Found',
+                    example: 'Resource not found',
+                  },
+                  error: {
+                    type: 'string',
+                    description: 'Resource not found',
+                    example: 'NOT_FOUND',
+                  },
+                },
+              },
+            },
+          },
+        }
       }
     },
 
