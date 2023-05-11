@@ -66,5 +66,15 @@ class TripController {
       return output(res, 500, error.message || error, null, 'SERVER_ERROR');
     }
   }
+
+  static async getTripsByAgency(req, res) {
+    try {
+      const trips = await TripServices.getTripsByAgency(req.params.agency);
+      if (!trips) return output(res, 404, 'No Trips found', null, 'TRIP_NOT_FOUND');
+      return output(res, 200, 'Trips Found Successfull', trips);
+    } catch (error) {
+      return output(res, 500, error.message || error, null, 'SERVER_ERROR');
+    }
+  }
 }
 export default TripController;
