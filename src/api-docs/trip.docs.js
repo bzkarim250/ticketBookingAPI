@@ -131,7 +131,7 @@ export const tripRouteDocs = {
   '/api/trip/create': {
     post: createTrip,
   },
-  '/api/trip/{agency}/all': {
+  '/api/trip/all/{agency}': {
     get: getTripsByAgency,
   },
 };
