@@ -45,11 +45,6 @@ export const isAgencyOrAdmin = async (req, res, next) => {
     }
     req.token = token;
     req.user = user;
-    const agency = await Agency.findOne({ companyAdmin: user.id });
-    if (!agency) {
-      return output(res, 403, 'You are not associated with any agency', null, 'FORBIDDEN');
-    }
-    req.agencyId = agency._id;
     return next();
   } catch (error) {
     return output(res, 401, error.message || error, null, 'AUTHENTICATION_ERROR');
@@ -70,6 +65,7 @@ export const isAllowed = async (req, res, next) => {
       return output(res, 403, 'You are not associated with any agency', null, 'FORBIDDEN');
     }
     req.agencyId = agency._id;
+    req.AgencyName = agency.name;
     return next();
   } catch (error) {
     return output(res, 401, error.message || error, null, 'AUTHENTICATION_ERROR');

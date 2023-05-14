@@ -11,7 +11,7 @@ class TicketController {
         agency, from, to, numberOfTickets, departureTime
       } = req.body;
       const { id, username, email } = req.user;
-      const trip = await TripServices.tripeExists(agency, from, to);
+      const trip = await TripServices.tripExists(agency, from, to);
       if (!trip) return output(res, 400, 'No available trip or route found', null, 'NO_AVAILABLE_TRIP');
       const { price } = trip;
       const bus = await BusServices.getAvailableBuses(agency, from, to, numberOfTickets);

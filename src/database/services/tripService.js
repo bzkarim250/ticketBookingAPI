@@ -17,7 +17,7 @@ class TripServices {
     return trip;
   }
 
-  static async tripeExists(agency, from, to) {
+  static async tripExists(agency, from, to) {
     const agence = await Agency.findOne({ name: agency });
     const { id } = agence;
     const trip = await Trip.findOne({ agency: id, from, to });
