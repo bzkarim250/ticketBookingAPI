@@ -8,7 +8,7 @@ class TripController {
         from, to, travelTime, price
       } = req.body;
       const agency = req.agencyId;
-      const tripExist = await TripServices.tripeExists({ agency, from, to });
+      const tripExist = await TripServices.getSingleTrip({ agency, from, to });
       if (tripExist) {
         return output(res, 409, 'Trip already exists', null, 'TRIP_EXISTS');
       }
